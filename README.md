@@ -12,3 +12,9 @@ Planned functions:
 - View load balancer config
 - View status of web servers
 - View status of load balancer
+- View load balancer logs
+  - tail -n [regex]
+  - cat [regex]
+- View web server logs
+  - \<port\> tail -n [regex]
+  - \<port\> cat [regex]
