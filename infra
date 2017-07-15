@@ -1,13 +1,11 @@
 #!/bin/bash
 
-set  -e
-
 lb_log_location=~/"logs.txt"
 
 function printUsage() {
   echo "usage: ./infra <command> [<options>]"
   echo "   lb-log [<options>]          View load balancer logs"
-  exit 1
+  echo "   status [<options>]          View status information"
 }
 
 function printLbLogUsage() {
@@ -17,7 +15,12 @@ function printLbLogUsage() {
   echo "       -r, --regex=[<regex>]   Match output against regexp"
   echo "   cat [<options>]"
   echo "       -r, --regex=[<regex>]   Match output against regexp"
-  exit 1
+}
+
+function printStatusUsage() {
+  echo "usage: ./infra status <[options]>"
+  echo "    -s, --server=<port>        Get server status"
+  echo "    --lb                       Get load balancer status"
 }
 
 function lbLog() {
@@ -69,6 +72,7 @@ function lbLog() {
         *)
           echo "Unknown flag \"$3\""
           printLbLogUsage
+          exit 1
           ;;
       esac
 
@@ -82,21 +86,70 @@ function lbLog() {
   esac
 }
 
+function status() {
+  action=""
+  case "$2" in
+    "--server="*)
+      action="server"
+      ;;
+    "-s="*)
+      action="server"
+      ;;
+    "--lb")
+      action="lb"
+      ;;
+    *)
+      printStatusUsage
+      exit 1
+      ;;
+  esac
+
+  case "$action" in
+    "server")
+      port="$(cut -d'=' -f2 <<<$2)"
+      respStatus=$(curl -s -o /dev/null -w "%{http_code}" localhost:$port)
+
+      echo -n "Port $port: "
+      if [ "$respStatus" == "000" ]; then
+        echo "No Response"
+        exit 0
+      else
+        echo "Responded with $respStatus"
+        exit 0
+      fi
+      ;;
+    "lb")
+      ;;
+    *)
+      printStatusUsage
+      exit 1
+      ;;
+  esac
+}
+
 if [ $# -eq 0 ]; then
   printUsage
+  exit 1
 fi
 
 case "$1" in
   "-h")
     printUsage
+    exit 1
     ;;
   "--help")
     printUsage
+    exit 1
     ;;
   "lb-log")
     lbLog $@
     ;;
+
+  "status")
+    status $@
+    ;;
   *)
     printUsage
+    exit 1
     ;;
 esac

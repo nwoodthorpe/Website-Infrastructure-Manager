@@ -5,6 +5,8 @@ Current functions:
 - View load balancer logs
   - tail -n [regex]
   - cat [regex]
+- View status of web servers (by port number)
+  - Individual server
 
 Planned functions:
 - Restart a server running on a specific port
@@ -12,8 +14,7 @@ Planned functions:
 - Add a new server to load balancer config
 - Remove a server from load balancer config
 - View load balancer config
-- View status of web servers (by port number or by name)
-  - Individual server
+- View status of web servers (by port number)
   - All servers
 - View status of load balancer
 - View web server logs
