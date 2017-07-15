@@ -6,6 +6,7 @@ lb_log_location=~/"logs.txt"
 
 function printUsage() {
   echo "usage: ./infra <command> [<options>]"
+  echo "   lb-log [<options>]          View load balancer logs"
   exit 1
 }
 
