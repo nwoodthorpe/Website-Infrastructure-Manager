@@ -2,7 +2,8 @@
 A tool to simplify tasks like adding new servers to my config, restarting servers, or modifying load balancer parameters.
 
 Current functions:
-- None
+- View load balancer logs
+  - tail -n [regex]
 
 Planned functions:
 - Restart a server running on a specific port
@@ -13,7 +14,6 @@ Planned functions:
 - View status of web servers
 - View status of load balancer
 - View load balancer logs
-  - tail -n [regex]
   - cat [regex]
 - View web server logs
   - \<port\> tail -n [regex]
