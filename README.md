@@ -16,5 +16,5 @@ Planned functions:
   - tail -n [regex]
   - cat [regex]
 - View web server logs
-  - <port> tail -n [regex]
-  - <port> cat [regex]
+  - \<port\> tail -n [regex]
+  - \<port\> cat [regex]
