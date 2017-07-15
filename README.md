@@ -12,7 +12,9 @@ Planned functions:
 - Add a new server to load balancer config
 - Remove a server from load balancer config
 - View load balancer config
-- View status of web servers
+- View status of web servers (by port number or by name)
+  - Individual server
+  - All servers
 - View status of load balancer
 - View web server logs
   - \<port\> tail -n [regex]
