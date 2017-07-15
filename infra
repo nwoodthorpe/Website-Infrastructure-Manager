@@ -47,10 +47,32 @@ function lbLog() {
             ;;
           *)
             echo "Unknown flag \"$arg\""
+            printLbLogUsage
             exit 1
         esac
       done
       echo "$(tail $linenums $lb_log_location | egrep "$regexp")"
+      exit 0
+      ;;
+    "cat")
+      regexp=""
+
+      case "$3" in
+        "")
+          ;;
+        "-r="*)
+          regexp="$(cut -d'=' -f2 <<<$3)"
+          ;;
+        "--regex="*)
+          regexp="$(cut -d'=' -f2 <<<$3)"
+          ;;
+        *)
+          echo "Unknown flag \"$3\""
+          printLbLogUsage
+          ;;
+      esac
+
+      echo "$(cat $lb_log_location | egrep "$regexp")"
       exit 0
       ;;
     *)
