@@ -1,0 +1,79 @@
+#!/bin/bash
+
+set  -e
+
+lb_log_location=~/"logs.txt"
+
+function printUsage() {
+  echo "usage: ./infra <command> [<options>]"
+  exit 1
+}
+
+function printLbLogUsage() {
+  echo "usage: ./infra lb-log [<output-format> [<options>]]"
+  echo "   tail [<options>]"
+  echo "       -#                      Output last # lines"
+  echo "       -r, --regex=[<regex>]   Match output against regexp"
+  echo "   cat [<options>]"
+  echo "       -r, --regex=[<regex>]   Match output against regexp"
+  exit 1
+}
+
+function lbLog() {
+  # "infra lb-log" is equiv to "infra lb-log tail -20"
+  if [ $# -eq 1 ]; then
+    2="tail"
+  fi
+
+  case "$2" in
+    "tail")
+      regexp=""
+      linenums="-20"
+      arglist=("$3" "$4")
+
+      for arg in "${arglist[@]}"; do
+        case "$arg" in
+          "")
+            ;;
+          "-"[123456789]*) # this is :fire:
+            linenums="$arg"
+            ;;
+          "-r="*)
+            regexp="$(cut -d'=' -f2 <<<$arg)"
+            ;;
+          "--regex="*)
+            regexp="$(cut -d'=' -f2 <<<$arg)"
+            ;;
+          *)
+            echo "Unknown flag \"$arg\""
+            exit 1
+        esac
+      done
+      echo "$(tail $linenums $lb_log_location | egrep "$regexp")"
+      exit 0
+      ;;
+    *)
+      printLbLogUsage
+      exit 1
+      ;;
+  esac
+}
+
+if [ $# -eq 0 ]; then
+  printUsage
+fi
+
+case "$1" in
+  "-h")
+    printUsage
+    ;;
+  "--help")
+    printUsage
+    ;;
+  "lb-log")
+    lbLog $@
+    ;;
+  *)
+    printUsage
+    ;;
+esac
