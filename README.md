@@ -2,6 +2,7 @@
 A tool to simplify tasks like adding new servers to my config, restarting servers, or modifying load balancer parameters.
 
 Current functions:
+- Restart load balancer (v1 won't have 0 downtime)
 - View load balancer config
 - View load balancer logs
   - tail -n [regex]
@@ -12,7 +13,6 @@ Current functions:
 
 Planned functions:
 - Restart a server running on a specific port
-- Restart load balancer (v1 won't have 0 downtime)
 - Add a new server to load balancer config
 - Remove a server from load balancer config
 - View status of web servers (by port number)

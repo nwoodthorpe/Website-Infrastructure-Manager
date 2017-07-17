@@ -7,6 +7,7 @@ function printUsage() {
   echo "usage: ./infra <command> [<options>]"
   echo "   lb-log [<options>]          View load balancer logs"
   echo "   lb-config                   View load balancer config file"
+  echo "   restart [<options>]         Restart server or load balancer"
   echo "   status [<options>]          View status information"
 }
 
@@ -23,6 +24,12 @@ function printStatusUsage() {
   echo "usage: ./infra status <[options]>"
   echo "    -s, --server=<port>        Get server status"
   echo "    --lb                       Get load balancer status"
+}
+
+function printRestartUsage() {
+  echo "usage: ./infra restart <[options]>"
+  echo "    --lb                       Restart load balancer"
+  echo "    -s, --server=<port>        Restart server with port number"
 }
 
 function lbLog() {
@@ -142,6 +149,50 @@ function status() {
   esac
 }
 
+function restartServer() {
+  echo "noop"
+}
+
+function restartLoadBalancer() {
+  sudo pkill -f "lb-server"
+  screen
+  cd ~/server/load-balancer/
+  ./lb-server >> ~/logs.txt 2>&1 &
+  echo "Server restarted"
+  exit 0
+}
+
+function restart(){
+  case "$2" in
+    "--lb")
+      action="load-balancer"
+      ;;
+
+    "--server="*)
+      action="server"
+      ;;
+
+    "-s="*)
+      action="server"
+      ;;
+
+    *)
+      printRestartUsage
+      exit 1
+      ;;
+  esac
+
+  case "$action" in
+    "server")
+      restart-server $3
+      ;;
+
+    "load-balancer")
+      restartLoadBalancer
+      ;;
+  esac
+}
+
 if [ $# -eq 0 ]; then
   printUsage
   exit 1
@@ -164,9 +215,14 @@ case "$1" in
     lbConfig
     ;;
 
+  "restart")
+    restart $@
+    ;;
+
   "status")
     status $@
     ;;
+
   *)
     printUsage
     exit 1
