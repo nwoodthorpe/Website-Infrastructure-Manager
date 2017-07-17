@@ -1,10 +1,12 @@
 #!/bin/bash
 
 lb_log_location=~/"logs.txt"
+lb_config_location=~/"server/load-balancer/config.yml"
 
 function printUsage() {
   echo "usage: ./infra <command> [<options>]"
   echo "   lb-log [<options>]          View load balancer logs"
+  echo "   lb-config                   View load balancer config file"
   echo "   status [<options>]          View status information"
 }
 
@@ -86,6 +88,10 @@ function lbLog() {
   esac
 }
 
+function lbConfig() {
+  cat $lb_config_location
+}
+
 function status() {
   action=""
   case "$2" in
@@ -143,6 +149,10 @@ case "$1" in
     ;;
   "lb-log")
     lbLog $@
+    ;;
+
+  "lb-config")
+    lbConfig
     ;;
 
   "status")
