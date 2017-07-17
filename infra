@@ -125,6 +125,15 @@ function status() {
       fi
       ;;
     "lb")
+      respStatus=$(curl -s -o /dev/null -w "%{http_code}" localhost:80)
+
+      if [ "$respStatus" == "000" ]; then
+        echo "No Response"
+        exit 0
+      else
+        echo "Responded with $respStatus"
+        exit 0
+      fi
       ;;
     *)
       printStatusUsage

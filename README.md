@@ -8,6 +8,7 @@ Current functions:
   - cat [regex]
 - View status of web servers (by port number)
   - Individual server
+- View status of load balancer
 
 Planned functions:
 - Restart a server running on a specific port
@@ -16,7 +17,6 @@ Planned functions:
 - Remove a server from load balancer config
 - View status of web servers (by port number)
   - All servers
-- View status of load balancer
 - View web server logs
   - \<port\> tail -n [regex]
   - \<port\> cat [regex]
